@@ -1,21 +1,25 @@
-require 'json'
-
 module Web
-    module Authentication
-        def self.included(action)
-            action.class_eval do
-                before :authenticate!
-            end
-        end
+  module Authentication
+    def self.included(action)
+      action.class_eval do
+        before :authenticate!
+        expose :user
+      end
+    end
 
     private
 
-        def authenticate! (params)
-            self.headers.merge!({ 'Access-Control-Allow-Origin' => 'http://192.168.31.228:8080','Access-Control-Allow-Headers' => 'Origin, X-Requested-With, Content-Type, Accept' })
-            #self.format= :json
-            unless UserRepository.new.verify_token(params[:tel],params[:token])
-                halt 200,{state: 'fail',reason: 'no permission'}.to_json
-            end
-        end
+    def authenticate!(params)
+      token = request.env['HTTP_AUTHORIZATION'] || params[:token]
+      begin
+        id = Tools.parse_token(token)
+      rescue StandardError
+        halt 401, 'Invalid Token'
+      end
+      new_token = Tools.make_token(id)
+      headers['Authorization'] = new_token
+      @user = UserRepository.new.find(id)
+      halt 401, 'No User' unless @user
     end
+  end
 end

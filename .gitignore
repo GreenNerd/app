@@ -1,2 +1,4 @@
 /public/assets*
 /tmp
+public/uploads/*
+log/development.log
