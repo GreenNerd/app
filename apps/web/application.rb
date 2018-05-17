@@ -104,7 +104,7 @@ module Web
       #             (only `:json` is supported)
       #           Object, the parser
       #
-      # body_parsers :json
+      body_parsers :json
 
       # When it's true and the router receives a non-encrypted request (http),
       # it redirects to the secure equivalent (https). Disabled by default.
@@ -260,6 +260,7 @@ module Web
       #
       # See: http://www.rubydoc.info/gems/hanami-controller#Configuration
       controller.prepare do
+        include Web::Headermaker
         include Web::Authentication
         # include MyAuthentication # included in all the actions
         # before :authenticate!    # run an authentication before callback
@@ -280,7 +281,7 @@ module Web
     #
     configure :development do
       # Don't handle exceptions, render the stack trace
-      handle_exceptions false
+      handle_exceptions true
     end
 
     ##
@@ -288,7 +289,7 @@ module Web
     #
     configure :test do
       # Don't handle exceptions, render the stack trace
-      handle_exceptions false
+      handle_exceptions true
     end
 
     ##

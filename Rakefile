@@ -8,5 +8,16 @@ Rake::TestTask.new do |t|
   t.warning = false
 end
 
+# Rake::TestTask.new do |t|
+#   t.pattern = 'spec/miniprogram/controllers/reservation/create_spec.rb'
+#   t.libs << 'spec'
+#   t.warning = false
+# end
+
 task default: :test
 task spec: :test
+
+# TODO: deal with crontab when deploy
+task refresh_reservations: :environment do
+  ReservationRepository.new.refresh_reservations
+end

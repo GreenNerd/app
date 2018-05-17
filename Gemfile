@@ -1,9 +1,14 @@
 source 'https://rubygems.org'
 
 gem 'rake'
-gem 'hanami',       '~> 1.1'
-gem 'hanami-model', '~> 1.1'
+gem 'hanami',       '~> 1.2'
+gem 'hanami-model', '~> 1.2'
 gem 'aliyun-sms'
+
+gem 'sidekiq'
+
+gem 'redis'
+gem 'jwt'
 
 gem 'shrine'
 gem 'hanami-shrine'
@@ -16,7 +21,7 @@ gem 'pg'
 group :development do
   # Code reloading
   # See: http://hanamirb.org/guides/projects/code-reloading
-  gem 'shotgun'
+  # gem 'shotgun'
 end
 
 group :test, :development do
@@ -29,5 +34,5 @@ group :test do
 end
 
 group :production do
-  # gem 'puma'
+  gem 'puma'
 end

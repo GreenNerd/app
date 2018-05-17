@@ -2,9 +2,13 @@ require 'bundler/setup'
 require 'hanami/setup'
 require 'hanami/model'
 require_relative '../lib/app'
+require_relative '../apps/miniprogram_admin/application'
+require_relative '../apps/miniprogram/application'
 require_relative '../apps/web/application'
 
 Hanami.configure do
+  mount MiniprogramAdmin::Application, at: '/miniprogram/admin'
+  mount Miniprogram::Application, at: '/miniprogram'
   mount Web::Application, at: '/'
 
   model do
@@ -36,12 +40,11 @@ Hanami.configure do
 
   environment :development do
     # See: http://hanamirb.org/guides/projects/logging
-    logger level: :info , stream: 'log/development.log'
+    logger level: :info # , stream: 'log/development.log'
   end
 
   environment :production do
     logger level: :info, formatter: :json, filter: [], stream: 'log/production.log'
-    
 
     mailer do
       delivery :smtp, address: ENV['SMTP_HOST'], port: ENV['SMTP_PORT']
